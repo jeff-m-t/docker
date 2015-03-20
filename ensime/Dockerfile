@@ -23,9 +23,8 @@ RUN mkdir ./.emacs.d-bootstrap && \
 RUN ./emacs-pkg-install.sh ensime && \
     rm emacs-pkg*
 
-ADD bin /home/developer/bin
-ADD https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/sbt-launch.jar /home/developer/bin/sbt-launch.jar
 ADD dotsbt /home/developer/.sbt-bootstrap
+ADD bin /home/developer/bin
 
 RUN mkdir /home/developer/source && \
     echo "\n# Ensure developemtn environment is configured" >> /home/developer/.bashrc && \
@@ -43,6 +42,9 @@ RUN chown -R developer.developer /home/developer
 
 USER developer
 
+VOLUME /home/developer/source
+
+CMD /bin/bash
 
 
 
