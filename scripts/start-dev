@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CONTAINER_NAME=$1
+
+if [ -z $CONTAINER_NAME ]; then echo "You must provide a container name"; exit 1; fi
+
+if [[ -n $(docker ps | grep $CONTAINER_NAME) ]]; then
+  docker attach $CONTAINER_NAME
+elif [[ -n $(docker ps -a | grep $CONTAINER_NAME) ]]; then
+  docker restart $CONTAINER_NAME && docker attach $CONTAINER_NAME
+else
+  docker run -it --env DOCKER_HOST=$DOCKER_HOST --env DOCKER_TLS_VERIFY=$DOCKER_TLS_VERIFY --env DOCKER_CERT_PATH=/var/docker/certs -v $DOCKER_CERT_PATH:/var/docker/certs --name $CONTAINER_NAME jeffmt/ensime
+fi
